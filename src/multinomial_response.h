@@ -20,42 +20,42 @@
 #ifndef MSGL_MULTINOMIAL_RESPONSE_H_
 #define MSGL_MULTINOMIAL_RESPONSE_H_
 
-using namespace sgl;
-
 class MultinomialResponse : public elements < MultinomialResponse > {
 
 private:
 
-	vector const linear_predictors;
+  sgl::vector const linear_predictors;
 
 public:
-	MultinomialResponse(sgl::vector const& linear_predictors) :
-		linear_predictors(linear_predictors) {}
+  MultinomialResponse(sgl::vector const& linear_predictors) :
+    linear_predictors(linear_predictors)
+  {}
 
-	//Needed so that we can use fields
-	MultinomialResponse() :
-			linear_predictors(null_vector) {}
+  //Needed so that we can use fields
+  MultinomialResponse() :
+    linear_predictors(sgl::null_vector)
+  {}
 
-	MultinomialResponse const& operator=(MultinomialResponse const& s) {
-		const_cast < vector & > ( this->linear_predictors ) = s.linear_predictors;
+  MultinomialResponse const& operator=(MultinomialResponse const& s) {
+    const_cast < sgl::vector & > ( this->linear_predictors ) = s.linear_predictors;
 
-		return * this;
-	}
+    return * this;
+  }
 
-	rList as_rList() const {
+  rList as_rList() const {
 
-		rList list;
+    rList list;
 
-		vector prob = exp(linear_predictors) * (1 / sum(exp(linear_predictors)));
-		natural class_index = linear_predictors.index_max() + 1;
+    sgl::vector prob = exp(linear_predictors) * (1 / sum(exp(linear_predictors)));
+    sgl::natural class_index = linear_predictors.index_max() + 1;
 
-		list.attach(linear_predictors, "link");
-		list.attach(prob, "response");
-		list.attach(class_index, "classes");
+    list.attach(linear_predictors, "link");
+    list.attach(prob, "response");
+    list.attach(class_index, "classes");
 
-		return list;
+    return list;
 
-	}
+  }
 
 };
 
