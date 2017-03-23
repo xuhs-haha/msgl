@@ -1,0 +1,107 @@
+---
+title: "Plotting the Expected Generalization Error"
+author: "Martin Vincent"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick Start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+set.seed(150)
+```
+
+## Plotting the Expected Generalization Error (for msgl version `r packageVersion("msgl")`)
+
+### 1. Load the msgl library in R
+```{r results="hide"}
+library(msgl)
+```
+
+### 2. Load your data
+Load data containing N samples and p features (covariates):
+
+```{r eval = FALSE}
+x <- # load design matrix (of size N x p)
+classes <- # load class labels (a vector of size N)
+```
+
+For the purpose of this tutorial we will load a data set consisting of microRNA normalized expression measurements of primary cancer samples.
+```{r}
+data(PrimaryCancers)
+x[1:5,1:5]
+dim(x)
+table(classes)
+```
+
+### 3. Estimate error using cross validation
+Choose `lambda` (fraction of lambda.max) and `alpha`, with `alpha = 1` for lasso, `alpha = 0` for group lasso and `alpha` in the range (0,1) for spares group lasso.
+
+Use `msgl::cv` to estimate the error for each lambda in a sequence decreasing from the data derived *lambda max* to `lambda` * *lambda max*.
+Lambda max is the lambda at which the first penalized parameter becomes non-zero.
+A smaller `lambda` will take longer to fit and include more features.
+The following command will run a 10 fold cross validation for each lambda value in the lambda sequence using 2 parallel units (using the [foreach](https://CRAN.R-project.org/package=foreach) and [doParallel](https://CRAN.R-project.org/package=doParallel) packages.
+
+```{r}
+cl <- makeCluster(2)
+registerDoParallel(cl)
+
+fit.cv <- msgl::cv(x, classes, fold = 10, alpha = 0.5, lambda = 0.1, use_parallel = TRUE)
+
+stopCluster(cl)
+```
+
+### 4. Extracting the error and number of features used in the models
+
+We may extract the expected generalization error for each of the `r nmod(fit.cv)` models using `Err`:
+```{r}
+# Error for the first 10 models
+Err(fit.cv)[1:10]
+```
+
+The number of features used in the models may be extracted using `features_stat`:
+```{r}
+# Number of features used in the fist 10 models (one row for each cross validation set)
+features_stat(fit.cv)[,1:10]
+
+# Expected number of features used in the fist 10 models
+colMeans(features_stat(fit.cv))[1:10]
+```
+
+The number of parameters used in the models may be extracted using `parameters_stat`:
+```{r}
+# Number of features used in the fist 10 models (one row for each cross validation set)
+parameters_stat(fit.cv)[,1:10]
+
+# Expected number of features used in the fist 10 models
+colMeans(parameters_stat(fit.cv))[1:10]
+```
+
+### 5. Plotting the error
+
+```{r}
+library(ggplot2)
+```
+
+Make a data.frame for plotting
+```{r}
+plot_df <- data.frame(
+  Err = Err(fit.cv),
+  Features = colMeans(features_stat(fit.cv)),
+  Parameters = colMeans(parameters_stat(fit.cv))
+)
+```
+
+Plot the expected error vs expected number of features
+```{r}
+ggplot(plot_df, aes(y = Err, x = Features)) +
+  geom_path()
+```
+
+Plot the expected error vs expected number of parameters
+```{r}
+ggplot(plot_df, aes(y = Err, x = Parameters)) +
+  geom_path()
+```
