@@ -51,9 +51,12 @@ print(script.path)
 branch <- get_git_branch(script.path)
 print(branch)
 
+# update branch and date in DESCRIPTION
 x_dcf <- read.dcf(file = file.path(script.path,"DESCRIPTION"))
-x_dcf[1,"GitHubRepo"] <- branch
+  x_dcf[1,"GitHubRepo"] <- branch
+  x_dcf[1,"Date"] <- as.character(Sys.Date())
 write.dcf(x_dcf, file = file.path(script.path,"DESCRIPTION"))
+
 
 ## Roxygenise
 library("roxygen2")
