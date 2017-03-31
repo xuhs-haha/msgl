@@ -1,7 +1,7 @@
 High Dimensional Multiclass Classification
 ------------------------------------------
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/msgl)](http://cran.r-project.org/package=msgl) [![Travis-CI Build Status](https://travis-ci.org/vincent-dk/msgl.svg?branch=develop)](https://travis-ci.org/vincent-dk/msgl) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/vincent-dk/msgl?branch=develop&svg=true)](https://ci.appveyor.com/project/vincent-dk/msgl) [![Coverage Status](https://codecov.io/github/vincent-dk/msgl/coverage.svg?branch=develop)](https://codecov.io/github/vincent-dk/msgl?branch=develop)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/msgl)](https://cran.r-project.org/package=msgl) [![Travis-CI Build Status](https://travis-ci.org/vincent-dk/msgl.svg?branch=develop)](https://travis-ci.org/vincent-dk/msgl) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/vincent-dk/msgl?branch=develop&svg=true)](https://ci.appveyor.com/project/vincent-dk/msgl) [![Coverage Status](https://codecov.io/github/vincent-dk/msgl/coverage.svg?branch=develop)](https://codecov.io/github/vincent-dk/msgl?branch=develop)
 
 Multi-class classification with feature and parameter selection using sparse group lasso. Suitable for high dimensional problems.
 
@@ -114,7 +114,6 @@ fit.cv
 
 -   R package documentation
 -   [Quick Start (Predict primary cancer site based on microRNA measurements)](quick-start.md)
--   [Plotting the Expected Generalization Error](plot-cv-results.md)
 -   [Sparse group lasso and high dimensional multinomial classification](http://dx.doi.org/10.1016/j.csda.2013.06.004) paper in Computational Statistics & Data Analysis
 
 ### Author

@@ -17,18 +17,24 @@ set.seed(150)
 pkg_version <- packageVersion(params$pkg)
 
 x_dcf <- read.dcf(file = file.path(getwd(), "..", "DESCRIPTION"))
-pkg_branch <- x_dcf[1,"GitHubRepo"]
 
-pkg_version_type <- switch(pkg_branch,
-  release = "release",
-  master = "release candidate",
-  develop = "development version"
-)
+if("GitHubRepo" %in% colnames(x_dcf)) {
+  pkg_branch <- x_dcf[1,"GitHubRepo"]
+
+  pkg_version_type <- switch(pkg_branch,
+    release = "release",
+    master = "release candidate",
+    develop = "development version"
+  )
+} else {
+  pkg_branch <- "release"
+  pkg_version_type <- "release"
+}
 ```
 
 ## High Dimensional Multiclass Classification
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/`r params$pkg`)](http://cran.r-project.org/package=`r params$pkg`)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/`r params$pkg`)](https://cran.r-project.org/package=`r params$pkg`)
 [![Travis-CI Build Status](https://travis-ci.org/vincent-dk/`r params$pkg`.svg?branch=`r pkg_branch`)](https://travis-ci.org/vincent-dk/`r params$pkg`)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/vincent-dk/`r params$pkg`?branch=`r pkg_branch`&svg=true)](https://ci.appveyor.com/project/vincent-dk/`r params$pkg`)
 [![Coverage Status](https://codecov.io/github/vincent-dk/`r params$pkg`/coverage.svg?branch=`r pkg_branch`)](https://codecov.io/github/vincent-dk/`r params$pkg`?branch=`r pkg_branch`)
@@ -117,7 +123,6 @@ fit.cv
 ### Documentation
 * R package documentation
 * [Quick Start (Predict primary cancer site based on microRNA measurements) ](quick-start.md)
-* [Plotting the Expected Generalization Error](plot-cv-results.md)
 * [Sparse group lasso and high dimensional multinomial classification](http://dx.doi.org/10.1016/j.csda.2013.06.004) paper in Computational Statistics & Data Analysis
 
 ### Author
