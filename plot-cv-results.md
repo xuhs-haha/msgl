@@ -1,4 +1,4 @@
-Plotting the Expected Generalization Error (for msgl version 2.3.8)
+Plotting the Expected Generalization Error (for msgl version 2.3.6)
 -------------------------------------------------------------------
 
 ### 1. Load the msgl library in R
